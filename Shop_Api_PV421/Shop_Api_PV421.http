@@ -1,0 +1,6 @@
+@Shop_Api_PV421_HostAddress = http://localhost:5157
+
+GET {{Shop_Api_PV421_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
