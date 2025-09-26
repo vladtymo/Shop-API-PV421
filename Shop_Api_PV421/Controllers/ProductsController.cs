@@ -3,6 +3,8 @@ using DataAccess.Data;
 using DataAccess.Data.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace Shop_Api_PV421.Controllers
 {
@@ -11,18 +13,22 @@ namespace Shop_Api_PV421.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly ShopDbContext ctx;
+        private readonly IMapper mapper;
 
-        public ProductsController(ShopDbContext ctx)
+        public ProductsController(ShopDbContext ctx, IMapper mapper)
         {
             this.ctx = ctx;
+            this.mapper = mapper;
         }
 
         [HttpGet("all")]
         public IActionResult GetAll()
         {
-            var items = ctx.Products.ToList();
+            var items = ctx.Products
+                .Include(x => x.Category) // perform LEF JOIN
+                .ToList();
 
-            return Ok(items);
+            return Ok(mapper.Map<IEnumerable<ProductDto>>(items));
         }
 
         [HttpGet]
@@ -48,38 +54,29 @@ namespace Shop_Api_PV421.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(GetErrorMessages());
 
-            var entity = new Product()
-            {
-                Title = model.Title,
-                Price = model.Price,
-                Quantity = model.Quantity,
-                CategoryId = model.CategoryId,
-                Discount = model.Discount,
-                ImageUrl = model.ImageUrl,
-                Description = model.Description
-            };
+            //var entity = new Product()
+            //{
+            //    Title = model.Title,
+            //    Price = model.Price,
+            //    Quantity = model.Quantity,
+            //    CategoryId = model.CategoryId,
+            //    Discount = model.Discount,
+            //    ImageUrl = model.ImageUrl,
+            //    Description = model.Description
+            //};
+            var entity = mapper.Map<Product>(model);
 
             // logic...
             ctx.Products.Add(entity);
             ctx.SaveChanges(); // generate id (execute INSERT SQL command)
 
-            var resultDto = new ProductDto()
-            {
-                Id = entity.Id,
-                Title = entity.Title,
-                Price = entity.Price,
-                Quantity = entity.Quantity,
-                CategoryId = entity.CategoryId,
-                Discount = entity.Discount,
-                ImageUrl = entity.ImageUrl,
-                Description = entity.Description
-            };
+            var result = mapper.Map<ProductDto>(entity);
 
             // 201
             return CreatedAtAction(
                 nameof(Get),            // The action to get a single product
-                new { id = resultDto.Id },  // Route values for that action
-                resultDto                   // Response body
+                new { id = result.Id }, // Route values for that action
+                result                  // Response body
             );
         }
 

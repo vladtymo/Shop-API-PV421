@@ -1,3 +1,5 @@
+using AutoMapper;
+using BusinessLogic.Configurations;
 using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +10,7 @@ string connStr = builder.Configuration.GetConnectionString("RemoteDb")
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddAutoMapper(cfg => { }, typeof(MapperProfile));
 
 builder.Services.AddDbContext<ShopDbContext>(options =>
     options.UseSqlServer(connStr));

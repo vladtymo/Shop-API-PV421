@@ -1,4 +1,6 @@
-﻿namespace BusinessLogic.DTOs
+﻿using AutoMapper;
+
+namespace BusinessLogic.DTOs
 {
     public class ProductDto
     {
