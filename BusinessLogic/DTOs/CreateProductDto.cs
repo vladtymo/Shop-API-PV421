@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DataAccess.Data.Entities;
+using System.ComponentModel.DataAnnotations;
 
-namespace DataAccess.Data.Entities
+namespace BusinessLogic.DTOs
 {
-    public class Product
+    // Dat Transfer Objects
+    public class CreateProductDto
     {
-        public int Id { get; set; }
-
         [Required, MinLength(3, ErrorMessage = "Title must has at least 3 characters.")]
         [RegularExpression(@"^[A-Z].*", ErrorMessage = "Title must start with a capital letter.")]
         public string Title { get; set; }
@@ -20,9 +20,5 @@ namespace DataAccess.Data.Entities
         [MinLength(10), MaxLength(3000)]
         public string? Description { get; set; }
         public int CategoryId { get; set; }
-
-        // ----- navigation properties
-        public Category? Category { get; set; }
-        public ICollection<OrderDetails>? Orders { get; set; }
     }
 }

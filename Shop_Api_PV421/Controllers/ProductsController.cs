@@ -1,4 +1,5 @@
-﻿using DataAccess.Data;
+﻿using BusinessLogic.DTOs;
+using DataAccess.Data;
 using DataAccess.Data.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +40,7 @@ namespace Shop_Api_PV421.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Product model)
+        public IActionResult Create(CreateProductDto model)
         {
             // TODO: reference (class) vs value (structures)
 
@@ -47,15 +48,38 @@ namespace Shop_Api_PV421.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(GetErrorMessages());
 
+            var entity = new Product()
+            {
+                Title = model.Title,
+                Price = model.Price,
+                Quantity = model.Quantity,
+                CategoryId = model.CategoryId,
+                Discount = model.Discount,
+                ImageUrl = model.ImageUrl,
+                Description = model.Description
+            };
+
             // logic...
-            ctx.Products.Add(model);
+            ctx.Products.Add(entity);
             ctx.SaveChanges(); // generate id (execute INSERT SQL command)
+
+            var resultDto = new ProductDto()
+            {
+                Id = entity.Id,
+                Title = entity.Title,
+                Price = entity.Price,
+                Quantity = entity.Quantity,
+                CategoryId = entity.CategoryId,
+                Discount = entity.Discount,
+                ImageUrl = entity.ImageUrl,
+                Description = entity.Description
+            };
 
             // 201
             return CreatedAtAction(
                 nameof(Get),            // The action to get a single product
-                new { id = model.Id },  // Route values for that action
-                model                   // Response body
+                new { id = resultDto.Id },  // Route values for that action
+                resultDto                   // Response body
             );
         }
 
