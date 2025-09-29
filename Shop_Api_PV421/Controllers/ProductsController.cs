@@ -46,13 +46,9 @@ namespace Shop_Api_PV421.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CreateProductDto model)
+        public IActionResult Create([FromBody] CreateProductDto model)
         {
             // TODO: reference (class) vs value (structures)
-
-            // model validation
-            if (!ModelState.IsValid)
-                return BadRequest(GetErrorMessages());
 
             var entity = mapper.Map<Product>(model);
 

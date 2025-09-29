@@ -2,6 +2,11 @@ using AutoMapper;
 using BusinessLogic.Configurations;
 using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Identity;
+using BusinessLogic.DTOs;
+using BusinessLogic.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +23,10 @@ builder.Services.AddDbContext<ShopDbContext>(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
