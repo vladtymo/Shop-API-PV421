@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BusinessLogic.DTOs
 {
-    // Dat Transfer Objects
+    // Data Transfer Objects
     public class CreateProductDto
     {
         [Required, MinLength(3, ErrorMessage = "Title must has at least 3 characters.")]

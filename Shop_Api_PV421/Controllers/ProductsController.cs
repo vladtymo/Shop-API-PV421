@@ -42,7 +42,7 @@ namespace Shop_Api_PV421.Controllers
             if (item == null) 
                 return NotFound("Product not found!"); // 404
 
-            return Ok(item); // 200
+            return Ok(mapper.Map<ProductDto>(item)); // 200
         }
 
         [HttpPost]
@@ -54,16 +54,6 @@ namespace Shop_Api_PV421.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(GetErrorMessages());
 
-            //var entity = new Product()
-            //{
-            //    Title = model.Title,
-            //    Price = model.Price,
-            //    Quantity = model.Quantity,
-            //    CategoryId = model.CategoryId,
-            //    Discount = model.Discount,
-            //    ImageUrl = model.ImageUrl,
-            //    Description = model.Description
-            //};
             var entity = mapper.Map<Product>(model);
 
             // logic...
@@ -81,23 +71,35 @@ namespace Shop_Api_PV421.Controllers
         }
 
         [HttpPut]
-        public IActionResult Edit(Product model)
+        public IActionResult Edit(EditProductDto model)
         {
             // model validation
             if (!ModelState.IsValid)
                 return BadRequest(GetErrorMessages());
 
             // logic...
-            ctx.Products.Update(model);
+            ctx.Products.Update(mapper.Map<Product>(model));
             ctx.SaveChanges();
 
             return Ok(); // 200
         }
 
-        //public IActionResult Delete(int id)
-        //{
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            if (id < 0)
+                return BadRequest("Id can not be negative!");
 
-        //}
+            var item = ctx.Products.Find(id);
+
+            if (item == null)
+                return NotFound("Product not found!");
+
+            ctx.Products.Remove(item);
+            ctx.SaveChanges(true);
+
+            return NoContent(); // 204
+        }
 
         private IEnumerable<string> GetErrorMessages()
         {
