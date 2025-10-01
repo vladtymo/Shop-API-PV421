@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using BusinessLogic.Interfaces;
 
 namespace Shop_Api_PV421.Controllers
 {
@@ -12,51 +13,32 @@ namespace Shop_Api_PV421.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly ShopDbContext ctx;
-        private readonly IMapper mapper;
+        private readonly IProductsService productsService;
 
-        public ProductsController(ShopDbContext ctx, IMapper mapper)
+        public ProductsController(IProductsService productsService)
         {
-            this.ctx = ctx;
-            this.mapper = mapper;
+            this.productsService = productsService;
         }
 
         [HttpGet("all")]
         public IActionResult GetAll()
         {
-            var items = ctx.Products
-                .Include(x => x.Category) // perform LEF JOIN
-                .ToList();
-
-            return Ok(mapper.Map<IEnumerable<ProductDto>>(items));
+            return Ok(productsService.GetAll());
         }
 
         [HttpGet]
         public IActionResult Get(int id)
         {
-            if (id < 0) 
-                return BadRequest("Id can not be negative!"); // 400
-
-            var item = ctx.Products.Find(id);
-
-            if (item == null) 
-                return NotFound("Product not found!"); // 404
-
-            return Ok(mapper.Map<ProductDto>(item)); // 200
+            return Ok(productsService.Get(id));
         }
 
         [HttpPost]
         public IActionResult Create([FromBody] CreateProductDto model)
         {
-            // TODO: reference (class) vs value (structures)
+            if (!ModelState.IsValid)
+                return BadRequest(GetErrorMessages());
 
-            var entity = mapper.Map<Product>(model);
-
-            // logic...
-            ctx.Products.Add(entity);
-            ctx.SaveChanges(); // generate id (execute INSERT SQL command)
-
-            var result = mapper.Map<ProductDto>(entity);
+            var result = productsService.Create(model);
 
             // 201
             return CreatedAtAction(
@@ -73,9 +55,7 @@ namespace Shop_Api_PV421.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(GetErrorMessages());
 
-            // logic...
-            ctx.Products.Update(mapper.Map<Product>(model));
-            ctx.SaveChanges();
+            productsService.Edit(model);
 
             return Ok(); // 200
         }
@@ -83,16 +63,7 @@ namespace Shop_Api_PV421.Controllers
         [HttpDelete]
         public IActionResult Delete(int id)
         {
-            if (id < 0)
-                return BadRequest("Id can not be negative!");
-
-            var item = ctx.Products.Find(id);
-
-            if (item == null)
-                return NotFound("Product not found!");
-
-            ctx.Products.Remove(item);
-            ctx.SaveChanges(true);
+            productsService.Delete(id);
 
             return NoContent(); // 204
         }
