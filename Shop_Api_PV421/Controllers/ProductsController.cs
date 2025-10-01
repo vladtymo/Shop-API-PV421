@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using BusinessLogic.Interfaces;
+using BusinessLogic;
 
 namespace Shop_Api_PV421.Controllers
 {

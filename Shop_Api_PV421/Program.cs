@@ -9,6 +9,7 @@ using BusinessLogic.DTOs;
 using BusinessLogic.Validators;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Services;
+using Shop_Api_PV421;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,9 @@ builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
+// AddSingleton
+// AddScoped
+// AddTransient
 builder.Services.AddScoped<IProductsService, ProductsService>();
 
 var app = builder.Build();
@@ -40,6 +44,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// add custom middleware
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 

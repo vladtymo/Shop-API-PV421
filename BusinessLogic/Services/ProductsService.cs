@@ -4,6 +4,7 @@ using BusinessLogic.Interfaces;
 using DataAccess.Data;
 using DataAccess.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace BusinessLogic.Services
 {
@@ -30,11 +31,13 @@ namespace BusinessLogic.Services
 
         public void Delete(int id)
         {
-            if (id < 0) return;
+            if (id < 0)
+                throw new HttpException("Id can not be negative.", HttpStatusCode.BadRequest); // 400
 
             var item = ctx.Products.Find(id);
 
-            if (item == null) return; // throw ex 
+            if (item == null)
+                throw new HttpException($"Product with id:{id} not found.", HttpStatusCode.NotFound); // 404
 
             ctx.Products.Remove(item);
             ctx.SaveChanges(true);
