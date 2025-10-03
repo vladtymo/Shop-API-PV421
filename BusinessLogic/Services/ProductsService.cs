@@ -62,11 +62,22 @@ namespace BusinessLogic.Services
             return mapper.Map<ProductDto>(item);
         }
 
-        public IList<ProductDto> GetAll()
+        public IList<ProductDto> GetAll(int? filterCategoryId, string? searchTitle) // iPhone 17
         {
-            var items = ctx.Products
-                .Include(x => x.Category) // perform LEF JOIN
-                .ToList();
+            // IQuerable - it's command only (without data)
+            // List, Array... (ToList()...) - get data from DB
+            IQueryable<Product> query = ctx.Products
+                .Include(x => x.Category); // perform LEF JOIN
+
+            if (filterCategoryId != null)
+                query = query.Where(x => x.CategoryId == filterCategoryId);
+
+            if (searchTitle != null)
+                query = query.Where(x => x.Title.ToLower().Contains(searchTitle.ToLower()));
+
+            // current query: select * from Products left join Categories where CategoryId = 4
+
+            var items = query.ToList(); // load data
 
             return mapper.Map<IList<ProductDto>>(items);
         }
