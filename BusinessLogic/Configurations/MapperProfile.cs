@@ -14,6 +14,7 @@ namespace BusinessLogic.Configurations
         public MapperProfile()
         {
             CreateMap<CreateProductDto, Product>();
+            CreateMap<Category, CategoryDto>().ReverseMap();
             CreateMap<EditProductDto, Product>();
             CreateMap<ProductDto, Product>().ReverseMap();
         }

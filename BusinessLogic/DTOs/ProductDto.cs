@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DataAccess.Data.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace BusinessLogic.DTOs

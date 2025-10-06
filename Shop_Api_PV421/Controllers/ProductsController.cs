@@ -24,7 +24,6 @@ namespace Shop_Api_PV421.Controllers
         [HttpGet("all")]
         public IActionResult GetAll(int? filterCategoryId, string? searchTitle)
         {
-            // ?
             return Ok(productsService.GetAll(filterCategoryId, searchTitle));
         }
 
