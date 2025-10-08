@@ -13,15 +13,15 @@ namespace DataAccess.Data
         }
         public ShopDbContext(DbContextOptions<ShopDbContext> options) : base(options) { }
 
-        public DbSet<Product> Products { get; set; }
-        public DbSet<OrderDetails> OrderDetails { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<Product> Products { get; set; } = default!; // (numbers - 0, bool - false, class - null)
+        public DbSet<OrderDetails> OrderDetails { get; set; } = default!;
+        public DbSet<Order> Orders { get; set; } = default!;
+        public DbSet<Category> Categories { get; set; } = default!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ShopPv421;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+            optionsBuilder.UseSqlServer("workstation id=shop-db.mssql.somee.com;packet size=4096;user id=vladnaz_SQLLogin_1;pwd=478semocox;data source=shop-db.mssql.somee.com;persist security info=False;initial catalog=shop-db;TrustServerCertificate=True");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

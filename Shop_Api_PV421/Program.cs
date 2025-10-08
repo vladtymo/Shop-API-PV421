@@ -10,6 +10,7 @@ using BusinessLogic.Validators;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Services;
 using Shop_Api_PV421;
+using DataAccess.Data.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,12 @@ builder.Services.AddAutoMapper(cfg => { }, typeof(MapperProfile));
 builder.Services.AddDbContext<ShopDbContext>(options =>
     options.UseSqlServer(connStr));
 
+builder.Services.AddIdentity<User, IdentityRole>(options =>
+    options.SignIn.RequireConfirmedAccount = false)
+    .AddDefaultTokenProviders()
+    //.AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<ShopDbContext>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -34,6 +41,7 @@ builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssembli
 // AddSingleton
 // AddScoped
 // AddTransient
+builder.Services.AddScoped<IAccountsService, AccountsService>();
 builder.Services.AddScoped<IProductsService, ProductsService>();
 builder.Services.AddScoped<ICategoriesService, CategoriesService>();
 
