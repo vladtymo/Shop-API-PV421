@@ -9,9 +9,11 @@ using DataAccess.Data;
 using DataAccess.Data.Entities;
 using BusinessLogic.Interfaces;
 using BusinessLogic.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Shop_Api_PV421.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase

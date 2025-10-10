@@ -7,6 +7,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using BusinessLogic.Interfaces;
 using BusinessLogic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Shop_Api_PV421.Controllers
 {
@@ -28,6 +29,7 @@ namespace Shop_Api_PV421.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Get(int id)
         {
             return Ok(productsService.Get(id));
