@@ -10,10 +10,11 @@ using DataAccess.Data.Entities;
 using BusinessLogic.Interfaces;
 using BusinessLogic.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Shop_Api_PV421.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase

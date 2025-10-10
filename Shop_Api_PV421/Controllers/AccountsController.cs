@@ -24,10 +24,10 @@ namespace Shop_Api_PV421.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginModel model)
+        public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            await accountsService.Login(model);
-            return Ok();
+            var res = await accountsService.Login(model);
+            return Ok(res);
         }
 
         [HttpPost("logout")]
