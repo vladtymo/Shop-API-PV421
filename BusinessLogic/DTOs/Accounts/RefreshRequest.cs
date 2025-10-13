@@ -1,8 +1,7 @@
 ﻿namespace BusinessLogic.DTOs.Accounts
 {
-    public class LoginResponse
+    public class RefreshRequest
     {
-        public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
     }
 }

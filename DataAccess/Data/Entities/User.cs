@@ -6,5 +6,7 @@ namespace DataAccess.Data.Entities
     {
         public DateTime? Birthdate { get; set; }
         public ICollection<Order>? Orders { get; set; }
+        public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
+
     }
 }

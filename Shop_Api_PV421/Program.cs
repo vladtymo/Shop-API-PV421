@@ -103,9 +103,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-// add custom middleware
-app.UseMiddleware<ErrorHandlerMiddleware>();
+if (app.Environment.IsProduction())
+{
+    // add custom middleware
+    app.UseMiddleware<ErrorHandlerMiddleware>();
+}
 
 app.UseHttpsRedirection();
 
