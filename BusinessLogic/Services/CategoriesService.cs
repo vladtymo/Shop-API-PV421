@@ -4,24 +4,25 @@ using BusinessLogic.Interfaces;
 using DataAccess.Data;
 using DataAccess.Data.Entities;
 using DataAccess.Helpers;
+using DataAccess.Repositories;
 using System.Net;
 
 namespace BusinessLogic.Services
 {
     public class CategoriesService : ICategoriesService
     {
-        private readonly ShopDbContext ctx;
         private readonly IMapper mapper;
+        private readonly IRepository<Category> repo;
 
-        public CategoriesService(ShopDbContext ctx, IMapper mapper)
+        public CategoriesService(IMapper mapper, IRepository<Category> repo)
         {
-            this.ctx = ctx;
             this.mapper = mapper;
+            this.repo = repo;
         }
 
         public async Task<IList<CategoryDto>> Get(int pageNumber = 1)
         {
-            var items = await PagedList<Category>.CreateAsync(ctx.Categories, pageNumber, 5);
+            var items = await repo.GetAllAsync(pageNumber, 5);
 
             return mapper.Map<IList<CategoryDto>>(items);
         }
@@ -30,8 +31,7 @@ namespace BusinessLogic.Services
         {
             var entity = mapper.Map<Category>(model);
 
-            ctx.Categories.Add(entity);
-            await ctx.SaveChangesAsync();
+            await repo.AddAsync(entity);
 
             return mapper.Map<CategoryDto>(entity);
         }
@@ -40,14 +40,14 @@ namespace BusinessLogic.Services
         {
             var item = await GetEntityById(id);
 
-            ctx.Categories.Remove(item);
-            await ctx.SaveChangesAsync(true);
+            await repo.DeleteAsync(id);
         }
 
         public async Task Edit(CategoryDto model)
         {
-            ctx.Categories.Update(mapper.Map<Category>(model));
-            await ctx.SaveChangesAsync();
+            var entity = mapper.Map<Category>(model);
+
+            await repo.UpdateAsync(entity);
         }
 
         public async Task<CategoryDto> GetById(int id)
@@ -62,7 +62,7 @@ namespace BusinessLogic.Services
             if (id < 0)
                 throw new HttpException("Id can not be negative.", HttpStatusCode.BadRequest); // 400
 
-            var item = await ctx.Categories.FindAsync(id);
+            var item = await repo.GetByIdAsync(id);
 
             if (item == null)
                 throw new HttpException($"Category with id:{id} not found.", HttpStatusCode.NotFound); // 404

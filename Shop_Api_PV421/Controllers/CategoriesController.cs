@@ -4,10 +4,10 @@ using BusinessLogic.Interfaces;
 using BusinessLogic.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Shop_Api_PV421.Helpers;
 
 namespace Shop_Api_PV421.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
@@ -36,6 +36,7 @@ namespace Shop_Api_PV421.Controllers
         // PUT: api/Categories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutCategory(CategoryDto category)
         {
             await categoriesService.Edit(category);
@@ -45,6 +46,7 @@ namespace Shop_Api_PV421.Controllers
         // POST: api/Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Category>> PostCategory(CategoryDto category)
         {
             var item = await categoriesService.Create(category);
@@ -53,6 +55,7 @@ namespace Shop_Api_PV421.Controllers
 
         // DELETE: api/Categories/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = Roles.ADMIN, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             await categoriesService.Delete(id);

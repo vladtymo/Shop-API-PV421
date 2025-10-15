@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class, BaseEntity
+    public class Repository<T> : IRepository<T> where T : class, BaseEntity
     {
         internal ShopDbContext context;
         internal DbSet<T> set;
 
-        public GenericRepository(ShopDbContext context)
+        public Repository(ShopDbContext context)
         {
             this.context = context;
             this.set = context.Set<T>();
@@ -21,7 +21,7 @@ namespace DataAccess.Repositories
             var query = set.AsQueryable();
 
             if (pageNumber != null)
-                await PagedList<T>.CreateAsync(query, pageNumber.Value, pageSize); // ???
+                return await PagedList<T>.CreateAsync(query, pageNumber.Value, pageSize); // ???
 
             return await query.ToListAsync();
         }
@@ -48,7 +48,7 @@ namespace DataAccess.Repositories
             if (entity != null)
             {
                 set.Remove(entity);
-                await context.SaveChangesAsync();
+                await context.SaveChangesAsync(true);
             }
         }
     }
