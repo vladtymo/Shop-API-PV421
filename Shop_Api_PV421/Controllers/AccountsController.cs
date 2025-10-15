@@ -1,6 +1,5 @@
 ﻿using BusinessLogic.DTOs.Accounts;
 using BusinessLogic.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Shop_Api_PV421.Controllers

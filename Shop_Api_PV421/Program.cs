@@ -1,4 +1,3 @@
-using AutoMapper;
 using BusinessLogic.Configurations;
 using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
@@ -6,15 +5,11 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using BusinessLogic.DTOs;
-using BusinessLogic.Validators;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Services;
 using Shop_Api_PV421;
 using DataAccess.Data.Entities;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.OpenApi.Models;
+using Shop_Api_PV421.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,6 +52,9 @@ builder.Services.AddJWTSettings(jwtOpts);
 builder.Services.AddSwaggerWithJWT();
 
 var app = builder.Build();
+
+// seed initial roles and admin user
+app.SeedRolesAndInitialAdmin();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

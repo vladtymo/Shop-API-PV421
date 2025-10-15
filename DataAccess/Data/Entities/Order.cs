@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace DataAccess.Data.Entities
+﻿namespace DataAccess.Data.Entities
 {
     public class Order
     {

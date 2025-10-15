@@ -1,12 +1,6 @@
 ﻿using BusinessLogic.DTOs;
-using DataAccess.Data;
-using DataAccess.Data.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using BusinessLogic.Interfaces;
-using BusinessLogic;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Shop_Api_PV421.Controllers
@@ -63,6 +57,7 @@ namespace Shop_Api_PV421.Controllers
             return Ok(); // 200
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         public IActionResult Delete(int id)
         {

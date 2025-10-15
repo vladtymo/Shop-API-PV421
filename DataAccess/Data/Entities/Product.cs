@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace DataAccess.Data.Entities
+﻿namespace DataAccess.Data.Entities
 {
     public class Product
     {

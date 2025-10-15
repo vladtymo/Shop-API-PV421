@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 
-namespace Shop_Api_PV421
+namespace Shop_Api_PV421.Extensions
 {
     public static class ServiceExtensions
     {

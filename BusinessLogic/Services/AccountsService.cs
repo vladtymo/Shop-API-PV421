@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using Azure.Core;
 using BusinessLogic.DTOs.Accounts;
 using BusinessLogic.Interfaces;
 using DataAccess.Data;
 using DataAccess.Data.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Net;

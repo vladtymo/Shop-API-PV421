@@ -1,7 +1,4 @@
-﻿using DataAccess.Data.Entities;
-using System.ComponentModel.DataAnnotations;
-
-namespace BusinessLogic.DTOs
+﻿namespace BusinessLogic.DTOs
 {
     // Data Transfer Objects
     public class CreateProductDto

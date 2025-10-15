@@ -4,7 +4,6 @@ using BusinessLogic.Helpers;
 using BusinessLogic.Interfaces;
 using DataAccess.Data;
 using DataAccess.Data.Entities;
-using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace BusinessLogic.Services
