@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace BusinessLogic.Helpers
+namespace DataAccess.Helpers
 {
     public class PagedList<T> : List<T>
     {
