@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using BusinessLogic.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Shop_Api_PV421.Helpers;
 
 namespace Shop_Api_PV421.Controllers
 {
@@ -57,7 +59,7 @@ namespace Shop_Api_PV421.Controllers
             return Ok(); // 200
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = Roles.ADMIN, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpDelete]
         public IActionResult Delete(int id)
         {
