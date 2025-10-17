@@ -4,10 +4,10 @@ namespace BusinessLogic.Interfaces
 {
     public interface IProductsService
     {
-        IList<ProductDto> GetAll(int? filterCategoryId, string? searchTitle);
-        ProductDto? Get(int id);
-        ProductDto Create(CreateProductDto model);
-        void Edit(EditProductDto model);
-        void Delete(int id);
+        Task<IList<ProductDto>> GetAll(int? filterCategoryId, string? searchTitle);
+        Task<ProductDto?> Get(int id);
+        Task<ProductDto> Create(CreateProductDto model);
+        Task Edit(EditProductDto model);
+        Task Delete(int id);
     }
 }

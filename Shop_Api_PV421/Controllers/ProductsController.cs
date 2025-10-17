@@ -19,25 +19,25 @@ namespace Shop_Api_PV421.Controllers
         }
 
         [HttpGet("all")]
-        public IActionResult GetAll(int? filterCategoryId, string? searchTitle)
+        public async Task<IActionResult> GetAll(int? filterCategoryId, string? searchTitle)
         {
-            return Ok(productsService.GetAll(filterCategoryId, searchTitle));
+            return Ok(await productsService.GetAll(filterCategoryId, searchTitle));
         }
 
         [HttpGet]
         [Authorize]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return Ok(productsService.Get(id));
+            return Ok(await productsService.Get(id));
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreateProductDto model)
+        public async Task<IActionResult> Create([FromBody] CreateProductDto model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(GetErrorMessages());
 
-            var result = productsService.Create(model);
+            var result = await productsService.Create(model);
 
             // 201
             return CreatedAtAction(
@@ -48,22 +48,22 @@ namespace Shop_Api_PV421.Controllers
         }
 
         [HttpPut]
-        public IActionResult Edit(EditProductDto model)
+        public async Task<IActionResult> Edit(EditProductDto model)
         {
             // model validation
             if (!ModelState.IsValid)
                 return BadRequest(GetErrorMessages());
 
-            productsService.Edit(model);
+            await productsService.Edit(model);
 
             return Ok(); // 200
         }
 
         [Authorize(Roles = Roles.ADMIN, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpDelete]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            productsService.Delete(id);
+            await productsService.Delete(id);
 
             return NoContent(); // 204
         }
