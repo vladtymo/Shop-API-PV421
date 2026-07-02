@@ -11,6 +11,7 @@ using Shop_Api_PV421;
 using DataAccess.Data.Entities;
 using Shop_Api_PV421.Extensions;
 using DataAccess.Repositories;
+using Shop_Api_PV421.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +19,10 @@ string connStr = builder.Configuration.GetConnectionString("RemoteDb")
     ?? throw new Exception("No Connection String found.");
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ApiRequestLoggingFilter>();
+});
 builder.Services.AddAutoMapper(cfg => { }, typeof(MapperProfile));
 
 builder.Services.AddDbContext<ShopDbContext>(options =>
