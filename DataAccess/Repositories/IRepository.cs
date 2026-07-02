@@ -10,6 +10,9 @@ namespace DataAccess.Repositories
 {
     public interface IRepository<T> where T : class, BaseEntity
     {
+        Task BeginTransactionAsync();
+        Task CommitTransactionAsync();
+        Task RollbackTransactionAsync();
         Task<IReadOnlyList<T>> GetAllAsync(
             int? pageNumber = null,
             int pageSize = 10,

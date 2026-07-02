@@ -2,6 +2,7 @@
 using DataAccess.Data.Entities;
 using DataAccess.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System.Linq.Expressions;
 
 namespace DataAccess.Repositories
@@ -10,11 +11,40 @@ namespace DataAccess.Repositories
     {
         internal ShopDbContext context;
         internal DbSet<T> set;
+        private IDbContextTransaction? currentTransaction;
 
         public Repository(ShopDbContext context)
         {
             this.context = context;
             this.set = context.Set<T>();
+        }
+
+        public async Task BeginTransactionAsync()
+        {
+            if (currentTransaction != null)
+                throw new InvalidOperationException("A transaction is already active.");
+
+            currentTransaction = await context.Database.BeginTransactionAsync();
+        }
+
+        public async Task CommitTransactionAsync()
+        {
+            if (currentTransaction == null)
+                throw new InvalidOperationException("No active transaction to commit.");
+
+            await currentTransaction.CommitAsync();
+            await currentTransaction.DisposeAsync();
+            currentTransaction = null;
+        }
+
+        public async Task RollbackTransactionAsync()
+        {
+            if (currentTransaction == null)
+                throw new InvalidOperationException("No active transaction to rollback.");
+
+            await currentTransaction.RollbackAsync();
+            await currentTransaction.DisposeAsync();
+            currentTransaction = null;
         }
 
         // IEnumerable vs IQueryble
